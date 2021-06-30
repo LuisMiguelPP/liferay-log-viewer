@@ -1,4 +1,4 @@
-Bundle-Name: liferay-log-viewer
-Bundle-SymbolicName: com.cara.utility.logviewer
+Bundle-Name: cara-log-viewer
+Bundle-SymbolicName: com.cara.utils.logviewer
 Bundle-Version: 7.1.2.1
 -sources: true

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.cara.utility.logviewer.portlets;
+package com.cara.utils.logviewer.portlets;
 
 import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
@@ -39,12 +39,12 @@ public class ControlPanelPortlet extends BasePanelApp {
 
 	@Override
 	public String getPortletId() {
-		return "com_cara_utility_logviewer_LogViewerPortlet";
+		return "com_cara_utils_logviewer_LogViewerPortlet";
 	}
 
 	@Override
 	@Reference(
-		target = "(javax.portlet.name=com_cara_utility_logviewer_LogViewerPortlet)",
+		target = "(javax.portlet.name=com_cara_utils_logviewer_LogViewerPortlet)",
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {

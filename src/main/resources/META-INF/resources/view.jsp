@@ -12,8 +12,8 @@ not, see <http://www.gnu.org/licenses/>.
 
 <%@ include file="init.jsp" %>
 
-<%@ page import="com.cara.utility.logviewer.portlets.LogViewerPortlet" %>
-<%@page import="com.cara.utility.logviewer.portlets.PortletPropsValues" %>
+<%@ page import="com.cara.utils.logviewer.portlets.LogViewerPortlet" %>
+<%@page import="com.cara.utils.logviewer.portlets.PortletPropsValues" %>
 
 <liferay-ui:success
 	key="success"

@@ -13,7 +13,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.cara.utility.logviewer.portlets;
+package com.cara.utils.logviewer.portlets;
 
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -48,7 +48,7 @@ import org.osgi.service.component.annotations.Component;
 		immediate = true,
 		property = {
 			"javax.portlet.display-name=Log viewer",
-			"javax.portlet.name=com_cara_utility_logviewer_LogViewerPortlet",
+			"javax.portlet.name=com_cara_utils_logviewer_LogViewerPortlet",
 			"com.liferay.portlet.add-default-resource=true",
 			"com.liferay.portlet.css-class-wrapper=portlet-controlpanel",
 			"com.liferay.portlet.render-weight=100",

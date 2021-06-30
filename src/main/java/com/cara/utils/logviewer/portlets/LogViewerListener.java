@@ -13,7 +13,7 @@
  * not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.cara.utility.logviewer.portlets;
+package com.cara.utils.logviewer.portlets;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
