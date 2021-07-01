@@ -25,7 +25,6 @@ import java.io.Writer;
 /**
  * LogHolder
  *
- * @author Chun Ho <chun.ho@permeance.com.au>
  */
 public class LogHolder {
 

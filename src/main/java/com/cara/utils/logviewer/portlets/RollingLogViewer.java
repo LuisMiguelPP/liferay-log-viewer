@@ -18,7 +18,6 @@ package com.cara.utils.logviewer.portlets;
 /**
  * RollingLogViewer
  *
- * @author Chun Ho <chun.ho@permeance.com.au>
  */
 public class RollingLogViewer {
 

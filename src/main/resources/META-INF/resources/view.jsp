@@ -44,12 +44,15 @@ not, see <http://www.gnu.org/licenses/>.
 								document.getElementById(preId).innerHTML = document.getElementById(preId).innerHTML + this.get('responseData').content;
 								document.getElementById("viewlogmode").innerHTML = this.get('responseData').mode;
 								window.consecutiveErrorCount=0;
+								window.pollingIntervalId = setTimeout(poll, <%= String.valueOf(PortletPropsValues.PERMEANCE_LOG_VIEWER_REFRESH_INTERVAL) %>);
 							} else {
 								window.consecutiveErrorCount++;
 								if (window.consecutiveErrorCount >= window.errorThreshold) {
 									clearTimeout(window.pollingIntervalId);
 									alert("Polling of the log has been stopped as the poll error limit has been reached. Please refresh the page to restart polling.");
 									document.getElementById(preId).innerHTML = document.getElementById(preId).innerHTML + "\n\n\n------\nPolling of the log has been stopped as the poll error limit has been reached. Please refresh the page to restart polling.\n------";
+								}else{
+									window.pollingIntervalId = setTimeout(poll, <%= String.valueOf(PortletPropsValues.PERMEANCE_LOG_VIEWER_REFRESH_INTERVAL) %>);
 								}
 							}
 						} catch(err) {
@@ -58,6 +61,8 @@ not, see <http://www.gnu.org/licenses/>.
 								clearTimeout(window.pollingIntervalId);
 								alert("Polling of the log has been stopped as the poll error limit has been reached. Please refresh the page to restart polling.");
 								document.getElementById(preId).innerHTML = document.getElementById(preId).innerHTML + "\n\n\n------\nPolling of the log has been stopped as the poll error limit has been reached. Please refresh the page to restart polling.\n------";
+							}else{
+								window.pollingIntervalId = setTimeout(poll, <%= String.valueOf(PortletPropsValues.PERMEANCE_LOG_VIEWER_REFRESH_INTERVAL) %>);
 							}
 						}
 					},
@@ -67,6 +72,8 @@ not, see <http://www.gnu.org/licenses/>.
 							clearTimeout(window.pollingIntervalId);
 							alert("Polling of the log has been stopped as the poll error limit has been reached. Please refresh the page to restart polling.");
 							document.getElementById(preId).innerHTML = document.getElementById(preId).innerHTML + "\n\n\n------\nPolling of the log has been stopped as the poll error limit has been reached. Please refresh the page to restart polling.\n------";
+						}else{
+							window.pollingIntervalId = setTimeout(poll, <%= String.valueOf(PortletPropsValues.PERMEANCE_LOG_VIEWER_REFRESH_INTERVAL) %>);
 						}
 					}
 				}
@@ -74,9 +81,11 @@ not, see <http://www.gnu.org/licenses/>.
 		});
 	}
 	function detachlogger() {
+		clearTimeout(window.pollingIntervalId);
 		return sendCmd('<%= LogViewerPortlet.OP_DETACH %>');
 	}
 	function attachlogger() {
+		window.pollingIntervalId = setTimeout(poll, <%= String.valueOf(PortletPropsValues.PERMEANCE_LOG_VIEWER_REFRESH_INTERVAL) %>);
 		return sendCmd('<%= LogViewerPortlet.OP_ATTACH %>');
 	}
 	function clearlogger() {
@@ -96,12 +105,17 @@ not, see <http://www.gnu.org/licenses/>.
 						if (result == '<%= LogViewerPortlet.RESULT_ERROR %>') {
 							alert(this.get('responseData').error);
 						}
+						var mode = this.get('responseData').mode;
+						if(mode !== 'undefined'){
+							document.getElementById("viewlogmode").innerHTML = mode;
+						}
 					}
 				}
 			});
 		});
 	}
-	window.pollingIntervalId = setInterval(poll, <%= String.valueOf(PortletPropsValues.PERMEANCE_LOG_VIEWER_REFRESH_INTERVAL) %>);
+// 	console.log("setInterval");
+<%-- 	window.pollingIntervalId = setInterval(poll, <%= String.valueOf(PortletPropsValues.PERMEANCE_LOG_VIEWER_REFRESH_INTERVAL) %>); --%>
 </script>
 <div class="container">
 	<pre id="<portlet:namespace/>viewlog">

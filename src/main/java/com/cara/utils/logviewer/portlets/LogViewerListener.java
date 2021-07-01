@@ -24,7 +24,6 @@ import javax.servlet.ServletContextListener;
 /**
  * LogViewerListener
  *
- * @author Chun Ho <chun.ho@permeance.com.au>
  * @see StartupServlet
  */
 public class LogViewerListener implements ServletContextListener {

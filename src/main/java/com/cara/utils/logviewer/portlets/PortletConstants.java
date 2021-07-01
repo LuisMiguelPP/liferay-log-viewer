@@ -18,7 +18,6 @@ package com.cara.utils.logviewer.portlets;
 /**
  * PortletConstants
  *
- * @author Chun Ho <chun.ho@permeance.com.au>
  */
 public class PortletConstants {
 

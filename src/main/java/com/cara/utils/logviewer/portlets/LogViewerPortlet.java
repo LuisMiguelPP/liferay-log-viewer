@@ -41,8 +41,6 @@ import org.osgi.service.component.annotations.Component;
 /**
  * LogViewerPortlet
  *
- * @author Chun Ho <chun.ho@permeance.com.au>
- * @author @baxtheman
  */
 @Component(
 		immediate = true,
@@ -132,6 +130,7 @@ public class LogViewerPortlet extends MVCPortlet {
 					LogHolder.attach();
 					final JSONObject obj = JSONFactoryUtil.createJSONObject();
 					obj.put(ATTRIB_RESULT, RESULT_SUCCESS);
+					obj.put(ATTRIB_MODE, MODE_ATTACHED);
 					resourceResponse.getWriter().print(obj.toString());
 				} catch (final Exception e) {
 					final StringWriter sw = new StringWriter();
@@ -153,6 +152,7 @@ public class LogViewerPortlet extends MVCPortlet {
 				LogHolder.detach();
 				final JSONObject obj = JSONFactoryUtil.createJSONObject();
 				obj.put(ATTRIB_RESULT, RESULT_SUCCESS);
+				obj.put(ATTRIB_MODE, MODE_DETACHED);
 				resourceResponse.getWriter().print(obj.toString());
 			} else {
 
@@ -171,6 +171,8 @@ public class LogViewerPortlet extends MVCPortlet {
 						new String(viewer.getBuffer(pointer, curpointer)));
 					mode = MODE_ATTACHED;
 				}
+				
+				mode = LogHolder.isAttached() ? MODE_ATTACHED : MODE_DETACHED;
 
 				final JSONObject obj = JSONFactoryUtil.createJSONObject();
 				obj.put(ATTRIB_POINTER, String.valueOf(curpointer));

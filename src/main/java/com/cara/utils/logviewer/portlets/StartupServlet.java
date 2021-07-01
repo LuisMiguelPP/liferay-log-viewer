@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServlet;
  *
  * This startup servlet is a workaround for those cases that need it.
  *
- * @author Chun Ho <chun.ho@permeance.com.au>
  */
 public class StartupServlet extends HttpServlet {
 

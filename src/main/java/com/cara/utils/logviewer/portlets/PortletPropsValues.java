@@ -23,7 +23,6 @@ import java.text.DecimalFormat;
 /**
  * PortletPropsValues
  *
- * @author Chun Ho <chun.ho@permeance.com.au>
  */
 public class PortletPropsValues {
 
