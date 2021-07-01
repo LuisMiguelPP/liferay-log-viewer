@@ -39,7 +39,7 @@ public class LogViewerListener implements ServletContextListener {
 
 				if (autoAttach) {
 					log.info("Autoattaching logger");
-					LogHolder.attach();
+					LogHolder.attach("");
 				} else {
 					log.info("NOT autoattaching logger");
 				}
@@ -52,7 +52,7 @@ public class LogViewerListener implements ServletContextListener {
 	public static synchronized void stopApplication() {
 		if (appStarted) {
 			appStarted = false;
-			LogHolder.detach();
+			LogHolder.detach("");
 			log.info("Log Viewer Shutdown");
 		}
 	}

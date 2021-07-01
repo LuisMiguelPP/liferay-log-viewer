@@ -23,7 +23,7 @@ public class PortletConstants {
 
 	public static final String ADD_APPENDER = "addAppender";
 
-	public static final boolean DEFAULT_AUTOATTACH = true;
+	public static final boolean DEFAULT_AUTOATTACH = false;
 
 	public static final String DEFAULT_LOG_PATTERN =
 		"%d{ABSOLUTE} %-5p [%c{1}:%L] %m%n";
@@ -33,6 +33,8 @@ public class PortletConstants {
 	public static final long DEFAULT_SLEEP_INTERVAL = 1000l;
 
 	public static final String GET_ROOT_LOGGER = "getRootLogger";
+	
+	public static final String GET_LOGGER = "getLogger";
 
 	public static final String LOG4J_APPENDER_CLASS =
 		"org.apache.log4j.Appender";

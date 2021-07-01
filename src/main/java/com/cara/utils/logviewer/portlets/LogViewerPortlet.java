@@ -84,6 +84,8 @@ public class LogViewerPortlet extends MVCPortlet {
 	public static final String OP_DETACH = "detach";
 
 	public static final String PARAM_OP = "cmd";
+	
+	public static final String PARAM_NAME = "pkgName";
 
 	public static final String RESULT_ERROR = "error";
 
@@ -124,10 +126,11 @@ public class LogViewerPortlet extends MVCPortlet {
 				HttpHeaders.CACHE_CONTROL, PortletConstants.NO_CACHE);
 
 			final String cmd = resourceRequest.getParameter(PARAM_OP);
+			String pkgName = resourceRequest.getParameter(PARAM_NAME);
 
 			if (OP_ATTACH.equals(cmd)) {
 				try {
-					LogHolder.attach();
+					LogHolder.attach(pkgName);
 					final JSONObject obj = JSONFactoryUtil.createJSONObject();
 					obj.put(ATTRIB_RESULT, RESULT_SUCCESS);
 					obj.put(ATTRIB_MODE, MODE_ATTACHED);
@@ -149,7 +152,7 @@ public class LogViewerPortlet extends MVCPortlet {
 					log.error(e);
 				}
 			} else if (OP_DETACH.equals(cmd)) {
-				LogHolder.detach();
+				LogHolder.detach(pkgName);
 				final JSONObject obj = JSONFactoryUtil.createJSONObject();
 				obj.put(ATTRIB_RESULT, RESULT_SUCCESS);
 				obj.put(ATTRIB_MODE, MODE_DETACHED);

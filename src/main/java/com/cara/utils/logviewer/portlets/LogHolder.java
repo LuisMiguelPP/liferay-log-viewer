@@ -18,6 +18,7 @@ package com.cara.utils.logviewer.portlets;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.CharArrayWriter;
 import java.io.Writer;
@@ -30,16 +31,21 @@ public class LogHolder {
 
 	public static final Log log = LogFactoryUtil.getLog(LogHolder.class);
 
-	public static synchronized void attach() throws Exception {
+	public static synchronized void attach(String name) throws Exception {
 		if (!isAttached()) {
 			try {
 				final ClassLoader portalClassLoader =
 					PortalClassLoaderUtil.getClassLoader();
 				final Class<?> logger = portalClassLoader.loadClass(
 					PortletConstants.LOG4J_LOGGER_CLASS);
-				final Object rootLoggerObj = logger.getMethod(
-					PortletConstants.GET_ROOT_LOGGER).invoke(null);
-
+				
+				Object loggerObj = null;
+				
+				if(Validator.isNull(name))
+					loggerObj = logger.getMethod(PortletConstants.GET_ROOT_LOGGER).invoke(null);
+				else
+					loggerObj = logger.getMethod(PortletConstants.GET_LOGGER, String.class).invoke(logger, name);
+				
 				final Class<?> patternLayout = portalClassLoader.loadClass(
 					PortletConstants.LOG4J_PATTERN_LAYOUT_CLASS);
 
@@ -68,7 +74,8 @@ public class LogHolder {
 
 				logger.getMethod(
 					PortletConstants.ADD_APPENDER,
-					appender).invoke(rootLoggerObj, writerAppenderObj);
+					appender).invoke(loggerObj, writerAppenderObj);
+				
 				attached = true;
 			} catch (final Exception e) {
 				log.error(e);
@@ -78,7 +85,7 @@ public class LogHolder {
 		}
 	}
 
-	public static synchronized void detach() {
+	public static synchronized void detach(String name) {
 		if (isAttached()) {
 			try {
 				runnable.setStop(true);
@@ -87,13 +94,16 @@ public class LogHolder {
 					PortalClassLoaderUtil.getClassLoader();
 				final Class<?> logger = portalClassLoader.loadClass(
 					PortletConstants.LOG4J_LOGGER_CLASS);
-				final Object rootLoggerObj = logger.getMethod(
-					PortletConstants.GET_ROOT_LOGGER).invoke(null);
+				Object loggerObj = null;
+				if(Validator.isNull(name))
+					loggerObj = logger.getMethod(PortletConstants.GET_ROOT_LOGGER).invoke(null);
+				else
+					loggerObj = logger.getMethod(PortletConstants.GET_LOGGER, String.class).invoke(logger, name);
 				final Class<?> appender = portalClassLoader.loadClass(
 					PortletConstants.LOG4J_APPENDER_CLASS);
 				logger.getMethod(
 					PortletConstants.REMOVE_APPENDER,
-					appender).invoke(rootLoggerObj, writerAppenderObj);
+					appender).invoke(loggerObj, writerAppenderObj);
 			} catch (final Exception e) {
 				log.warn(e);
 			}

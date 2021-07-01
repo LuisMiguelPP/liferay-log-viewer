@@ -82,21 +82,22 @@ not, see <http://www.gnu.org/licenses/>.
 	}
 	function detachlogger() {
 		clearTimeout(window.pollingIntervalId);
-		return sendCmd('<%= LogViewerPortlet.OP_DETACH %>');
+		return sendCmd('<%= LogViewerPortlet.OP_DETACH %>', $("#<portlet:namespace/>log-selector").val());
 	}
 	function attachlogger() {
 		window.pollingIntervalId = setTimeout(poll, <%= String.valueOf(PortletPropsValues.PERMEANCE_LOG_VIEWER_REFRESH_INTERVAL) %>);
-		return sendCmd('<%= LogViewerPortlet.OP_ATTACH %>');
+		return sendCmd('<%= LogViewerPortlet.OP_ATTACH %>', $("#<portlet:namespace/>log-selector").val());
 	}
 	function clearlogger() {
 		document.getElementById(preId).innerHTML = '';
 	}
-	function sendCmd(mycmd) {
+	function sendCmd(mycmd, pkgname) {
 		var resourceMappingUrl = '<portlet:resourceURL/>';
 		AUI().use('aui-io-request', function(A) {
 			A.io.request(resourceMappingUrl, {
 				method: 'POST', data: {
-					"<portlet:namespace/><%= LogViewerPortlet.PARAM_OP %>": mycmd
+					"<portlet:namespace/><%= LogViewerPortlet.PARAM_OP %>": mycmd,
+					"<portlet:namespace/><%= LogViewerPortlet.PARAM_NAME %>": pkgname
 				},
 				dataType: 'json',
 				on: {
@@ -108,6 +109,13 @@ not, see <http://www.gnu.org/licenses/>.
 						var mode = this.get('responseData').mode;
 						if(mode !== 'undefined'){
 							document.getElementById("viewlogmode").innerHTML = mode;
+							if(mode== '<%= LogViewerPortlet.MODE_ATTACHED  %>'){
+								$('#attach-btn').prop( "disabled", true );
+								$("#<portlet:namespace/>log-selector").prop( "disabled", true );
+							}else if(mode== '<%= LogViewerPortlet.MODE_DETACHED  %>'){
+								$('#attach-btn').prop( "disabled", false );
+								$("#<portlet:namespace/>log-selector").prop( "disabled", false );
+							}
 						}
 					}
 				}
@@ -118,8 +126,11 @@ not, see <http://www.gnu.org/licenses/>.
 <%-- 	window.pollingIntervalId = setInterval(poll, <%= String.valueOf(PortletPropsValues.PERMEANCE_LOG_VIEWER_REFRESH_INTERVAL) %>); --%>
 </script>
 <div class="container">
-	<pre id="<portlet:namespace/>viewlog">
-	</pre>
+	<aui:select name="log-selector" label="Log selector">
+		<aui:option value="">Liferay</aui:option>
+		<aui:option value="com.cara">Cara</aui:option>
+		<aui:option value="com.cara.service.helper">Cara service helper</aui:option>
+	</aui:select>
 	<div class="alert alert-info" role="alert">
 		<span class="alert-indicator">
 			<svg class="lexicon-icon lexicon-icon-info-circle" focusable="false" role="presentation">
@@ -131,19 +142,17 @@ not, see <http://www.gnu.org/licenses/>.
 		<liferay-ui:message arguments="<%= new String[] {PortletPropsValues.PERMEANCE_LOG_VIEWER_REFRESH_INTERVAL_DISPLAY_SECONDS} %>" key="polling-every-x-seconds" />
 	</div>
 	<div class="navbar navbar-collapse-absolute navbar-expand-md ">
-	<input class="btn btn-primary btn-sm" onClick="attachlogger(); return false;" type="button" value="<liferay-ui:message key="attach-logger" />" />
-	<input class="btn btn-secondary btn-sm" onClick="clearlogger(); return false;" type="button" value="<liferay-ui:message key="clear-logger" />" />
-	<input class="btn btn-secondary btn-sm" onClick="detachlogger(); return false;" type="button" value="<liferay-ui:message key="detach-logger" />" />
+	<input id="attach-btn" class="btn btn-primary btn-sm" onClick="attachlogger(); return false;" type="button" value="<liferay-ui:message key="attach-logger" />" />
+	<input id="clear-btn" class="btn btn-secondary btn-sm" onClick="clearlogger(); return false;" type="button" value="<liferay-ui:message key="clear-logger" />" />
+	<input id="detach-btn" class="btn btn-secondary btn-sm" onClick="detachlogger(); return false;" type="button" value="<liferay-ui:message key="detach-logger" />" />
 	</div>
-	<p class="small">
-	<em><liferay-ui:message key="you-can-set-portal-property" /> <b>permeance.log.viewer.autoattach</b> <liferay-ui:message key="autoattach-description" /></em><br />
-	<em><liferay-ui:message key="you-can-set-portal-property" /> <b>permeance.log.viewer.pattern</b> <liferay-ui:message key="pattern-description" /></em><br /><br />
-	</p>
+	<pre id="<portlet:namespace/>viewlog">
+	</pre>
 </div>
 <style>
 #<portlet:namespace/>viewlog {
 	margin: 10px 0px;
-	min-height: 100px;
+	min-height: 200px;
 	background-color: #333;
 	color: #ccc;
 	font-size: 11px;
